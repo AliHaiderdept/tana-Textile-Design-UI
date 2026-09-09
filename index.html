@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SŪTRA — Tactile Textile Design Lab</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js for interactive states -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Google Fonts: Cormorant Garamond (Serif) & DM Sans (Sans-Serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clay: {
+                            50: '#FAF6F0',
+                            100: '#F4ECE1',
+                            200: '#E6D5C3',
+                            700: '#8C5E45',
+                            800: '#6E432F',
+                            900: '#4D2C1D',
+                        },
+                        indigo: {
+                            900: '#1B2430',
+                            950: '#111822',
+                        },
+                        sage: {
+                            100: '#E8EFE9',
+                            500: '#8FA89B',
+                            800: '#3D5446',
+                        },
+                        ochre: {
+                            100: '#FAF0D9',
+                            500: '#D4AF37',
+                            800: '#8C6D15',
+                        },
+                        charcoal: '#232323'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['DM Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Tactile organic canvas texture background */
+        .tactile-bg {
+            background-color: #FDFBF7;
+            background-image: radial-gradient(rgba(140, 94, 69, 0.15) 1px, transparent 0),
+                              radial-gradient(rgba(140, 94, 69, 0.1) 1px, transparent 0);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+        }
+
+        /* Thread-like custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4ECE1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8C5E45;
+            border-radius: 3px;
+        }
+
+        /* Subtle linen texture overlay */
+        .linen-overlay {
+            position: relative;
+        }
+        .linen-overlay::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.04;
+            pointer-events: none;
+            background-image: repeating-linear-gradient(0deg, #000, #000 1px, transparent 1px, transparent 4px),
+                              repeating-linear-gradient(90deg, #000, #000 1px, transparent 1px, transparent 4px);
+        }
+
+        /* Smooth page transition hints */
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="tactile-bg font-sans text-charcoal antialiased linen-overlay min-h-screen selection:bg-clay-200 selection:text-clay-900">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-clay-200 sticky top-0 bg-[#FDFBF7]/95 backdrop-blur-md z-40 px-6 lg:px-12 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Brand Logo with Organic Vector Thread loop symbol -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <svg class="w-8 h-8 text-clay-700 group-hover:rotate-12 transition-transform duration-500" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 15C30 15 15 30 15 50C15 70 30 85 50 85C70 85 85 70 85 50" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 8"/>
+                    <path d="M50 30C40 30 30 40 30 50C30 60 40 70 50 70C60 70 70 60 70 50C70 40 60 30 50 30Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M50 5C75 5 95 25 95 50" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <div>
+                    <span class="font-serif text-2xl font-semibold tracking-wider block leading-none">SŪTRA</span>
+                    <span class="text-[10px] tracking-widest text-clay-700 uppercase">Tactile Design Lab</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex space-x-8 text-sm font-medium tracking-wide">
+                <a href="#loom" class="hover:text-clay-700 transition-colors py-2 relative group">
+                    The Custom Loom
+                    <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-clay-700 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#archives" class="hover:text-clay-700 transition-colors py-2 relative group">
+                    Weave Archives
+                    <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-clay-700 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#atelier" class="hover:text-clay-700 transition-colors py-2 relative group">
+                    Artisan Atelier
+                    <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-clay-700 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#moodboard" class="hover:text-clay-700 transition-colors py-2 relative group">
+                    Mood Board
+                    <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-clay-700 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            </nav>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center space-x-4">
+                <button class="hidden lg:flex items-center space-x-2 text-xs uppercase tracking-widest border border-clay-700 px-4 py-2 hover:bg-clay-700 hover:text-white transition-all duration-300 rounded-full font-medium">
+                    <span>Order Yarn Book</span>
+                    <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+                </button>
+                <button class="bg-clay-800 text-white p-2.5 rounded-full hover:bg-clay-900 transition-colors shadow-sm">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-4 md:px-8 py-10 space-y-24">
+
+        <!-- Section 1: Hero & Tactile Statement -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <!-- Left Narrative Column -->
+            <div class="lg:col-span-5 space-y-6 fade-in-up">
+                <span class="inline-flex items-center space-x-2 bg-clay-100 text-clay-800 text-xs px-3.5 py-1.5 rounded-full font-medium tracking-wide">
+                    <span class="w-2 h-2 rounded-full bg-clay-700 animate-pulse"></span>
+                    <span>Hand-Drawn & Loom-Woven Tech</span>
+                </span>
+                <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl leading-tight text-clay-900 font-light">
+                    Where human hands guide the <span class="italic font-normal text-clay-700">vector grid</span>.
+                </h1>
+                <p class="text-clay-800 font-light leading-relaxed max-w-lg text-lg">
+                    A digital playground celebrating the physics of weft, warp, organic fibers, and vector symmetry. Crafted for master textile artists and modern apparel designers. No artificial formulas—just tactile mathematics.
+                </p>
+                <div class="pt-4 flex flex-wrap gap-4">
+                    <a href="#loom" class="bg-clay-800 text-white font-medium px-8 py-4 rounded-xl hover:bg-clay-900 transition-all duration-300 flex items-center space-x-3 shadow-md hover:shadow-xl hover:-translate-y-0.5">
+                        <span>Launch Pattern Loom</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#archives" class="border border-clay-200 bg-white/50 text-clay-900 px-6 py-4 rounded-xl hover:bg-white transition-all duration-300 flex items-center space-x-2 font-medium">
+                        <span>Explore Prints</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Vector Visual Art Piece (The Dynamic Thread Matrix) -->
+            <div class="lg:col-span-7 h-[450px] lg:h-[550px] relative rounded-3xl overflow-hidden bg-clay-100 border border-clay-200 shadow-inner flex items-center justify-center p-8 group">
+                <!-- Decorative Weaver Marks (Technical Blueprint Detail) -->
+                <div class="absolute inset-4 border border-dashed border-clay-200 pointer-events-none rounded-2xl flex justify-between p-2 text-[10px] text-clay-700 font-mono">
+                    <span>GRID REF: #8809-A</span>
+                    <span>ORGANIC WEAP SYSTEM</span>
+                    <span class="absolute bottom-2 left-2">SCALE: 1:1 TACTILE</span>
+                    <span class="absolute bottom-2 right-2">50% LINEN / 50% SILK</span>
+                </div>
+
+                <!-- Abstract Layered Vector "Weave" representing fabric draping -->
+                <div class="relative w-full h-full flex items-center justify-center">
+                    <!-- Thread layer 1 -->
+                    <svg class="absolute w-11/12 h-11/12 text-clay-700/10 transition-all duration-1000 group-hover:scale-105 group-hover:-rotate-3" viewBox="0 0 400 400" fill="none">
+                        <path d="M10 200 C150 50, 250 350, 390 200" stroke="currentColor" stroke-width="4" stroke-dasharray="8 4"/>
+                        <path d="M10 240 C150 90, 250 390, 390 240" stroke="currentColor" stroke-width="3" stroke-dasharray="12 6"/>
+                        <path d="M10 160 C150 10, 250 310, 390 160" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+
+                    <!-- Thread layer 2 (Intersecting Warp) -->
+                    <svg class="absolute w-10/12 h-10/12 text-sage-500/20 transition-all duration-1000 group-hover:scale-95 group-hover:rotate-6" viewBox="0 0 400 400" fill="none">
+                        <path d="M200 10 C50 150, 350 250, 200 390" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                        <path d="M240 10 C90 150, 390 250, 240 390" stroke="currentColor" stroke-width="3"/>
+                        <path d="M160 10 C10 150, 310 250, 160 390" stroke="currentColor" stroke-width="1.5" stroke-dasharray="10 5"/>
+                    </svg>
+
+                    <!-- Core Geometric Graphic: "The Hand Loom Seal" -->
+                    <div class="relative bg-white p-8 rounded-2xl shadow-xl border border-clay-200/50 max-w-sm text-center space-y-4 transform transition-all duration-500 group-hover:-translate-y-2">
+                        <div class="w-16 h-16 mx-auto bg-clay-700 text-clay-50 rounded-full flex items-center justify-center shadow-lg">
+                            <svg class="w-8 h-8 animate-spin" style="animation-duration: 20s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="2" x2="12" y2="22"/>
+                                <line x1="2" y1="12" x2="22" y2="12"/>
+                                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+                                <line x1="4.93" y1="19.07" x2="19.07" y2="4.93"/>
+                            </svg>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="font-serif text-2xl font-semibold text-clay-900">Pattern #104: Block Print</p>
+                            <p class="text-xs text-clay-700 tracking-wider uppercase font-mono">Organic Indigo & Ochre Dye</p>
+                        </div>
+                        <!-- Color Swatches -->
+                        <div class="flex justify-center space-x-2 pt-2">
+                            <span class="w-5 h-5 rounded-full bg-indigo-900 border border-white shadow-sm ring-1 ring-clay-200"></span>
+                            <span class="w-5 h-5 rounded-full bg-clay-700 border border-white shadow-sm ring-1 ring-clay-200"></span>
+                            <span class="w-5 h-5 rounded-full bg-sage-500 border border-white shadow-sm ring-1 ring-clay-200"></span>
+                            <span class="w-5 h-5 rounded-full bg-ochre-500 border border-white shadow-sm ring-1 ring-clay-200"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Interactive Vector Custom Loom (The Workspace) -->
+        <section id="loom" class="bg-white rounded-3xl p-6 lg:p-12 border border-clay-200 shadow-xl scroll-mt-24" x-data="{ 
+            selectedPattern: 'herringbone', 
+            warpColor: '#8C5E45', 
+            weftColor: '#D4AF37', 
+            density: 8, 
+            zoom: false 
+        }">
+            <div class="max-w-6xl mx-auto space-y-10">
+                <!-- Studio Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-clay-100 pb-6">
+                    <div>
+                        <span class="text-xs font-mono text-clay-700 uppercase tracking-widest block mb-2">Live Simulation Lab</span>
+                        <h2 class="font-serif text-3xl md:text-4xl text-clay-900 font-semibold">Interactive Vector Loom</h2>
+                        <p class="text-sm text-clay-800 mt-1 max-w-xl">Adjust warp & weft values below. Experience digital weaving rendered in pure vector math.</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button @click="zoom = !zoom" class="bg-clay-50 border border-clay-200 text-clay-800 text-xs px-4 py-2 rounded-lg hover:bg-clay-100 transition-colors flex items-center space-x-2">
+                            <i data-lucide="zoom-in" class="w-4 h-4"></i>
+                            <span x-text="zoom ? 'Standard View' : 'Zoom-In Grid'">Zoom-In Grid</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Customizer Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                    <!-- Interactive Controls Panel (Left) -->
+                    <div class="lg:col-span-5 space-y-8 bg-clay-50/50 p-6 rounded-2xl border border-clay-100">
+                        <!-- Step 1: Select Weave Pattern -->
+                        <div class="space-y-3">
+                            <label class="text-xs uppercase tracking-widest font-mono text-clay-700 block">1. Weave Structure</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button @click="selectedPattern = 'herringbone'" 
+                                    :class="selectedPattern === 'herringbone' ? 'border-clay-700 bg-clay-700 text-white shadow-md' : 'border-clay-200 hover:bg-white text-clay-800 bg-transparent'"
+                                    class="border text-xs py-3 px-2 rounded-xl font-medium transition-all duration-300">
+                                    Herringbone
+                                </button>
+                                <button @click="selectedPattern = 'houndstooth'" 
+                                    :class="selectedPattern === 'houndstooth' ? 'border-clay-700 bg-clay-700 text-white shadow-md' : 'border-clay-200 hover:bg-white text-clay-800 bg-transparent'"
+                                    class="border text-xs py-3 px-2 rounded-xl font-medium transition-all duration-300">
+                                    Houndstooth
+                                </button>
+                                <button @click="selectedPattern = 'basketweave'" 
+                                    :class="selectedPattern === 'basketweave' ? 'border-clay-700 bg-clay-700 text-white shadow-md' : 'border-clay-200 hover:bg-white text-clay-800 bg-transparent'"
+                                    class="border text-xs py-3 px-2 rounded-xl font-medium transition-all duration-300">
+                                    Basket Weave
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Thread Colors (Warp vs Weft) -->
+                        <div class="space-y-4">
+                            <label class="text-xs uppercase tracking-widest font-mono text-clay-700 block">2. Thread Colorways</label>
+                            
+                            <!-- Warp Color Selector -->
+                            <div class="space-y-2">
+                                <span class="text-xs text-clay-800 flex justify-between">
+                                    <span>Warp Threads <span class="font-light italic">(Vertical)</span></span>
+                                    <span class="font-mono text-[10px]" x-text="warpColor"></span>
+                                </span>
+                                <div class="flex items-center space-x-3">
+                                    <input type="color" x-model="warpColor" class="w-8 h-8 rounded-md cursor-pointer border border-clay-200 p-0 overflow-hidden">
+                                    <div class="flex space-x-1.5">
+                                        <button @click="warpColor = '#8C5E45'" class="w-5 h-5 rounded-full bg-[#8C5E45] border border-white shadow"></button>
+                                        <button @click="warpColor = '#1B2430'" class="w-5 h-5 rounded-full bg-[#1B2430] border border-white shadow"></button>
+                                        <button @click="warpColor = '#3D5446'" class="w-5 h-5 rounded-full bg-[#3D5446] border border-white shadow"></button>
+                                        <button @click="warpColor = '#941B1B'" class="w-5 h-5 rounded-full bg-[#941B1B] border border-white shadow"></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Weft Color Selector -->
+                            <div class="space-y-2">
+                                <span class="text-xs text-clay-800 flex justify-between">
+                                    <span>Weft Threads <span class="font-light italic">(Horizontal)</span></span>
+                                    <span class="font-mono text-[10px]" x-text="weftColor"></span>
+                                </span>
+                                <div class="flex items-center space-x-3">
+                                    <input type="color" x-model="weftColor" class="w-8 h-8 rounded-md cursor-pointer border border-clay-200 p-0 overflow-hidden">
+                                    <div class="flex space-x-1.5">
+                                        <button @click="weftColor = '#D4AF37'" class="w-5 h-5 rounded-full bg-[#D4AF37] border border-white shadow"></button>
+                                        <button @click="weftColor = '#FAF6F0'" class="w-5 h-5 rounded-full bg-[#FAF6F0] border border-clay-200 shadow"></button>
+                                        <button @click="weftColor = '#8D2B4A'" class="w-5 h-5 rounded-full bg-[#8D2B4A] border border-white shadow"></button>
+                                        <button @click="weftColor = '#246B70'" class="w-5 h-5 rounded-full bg-[#246B70] border border-white shadow"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Thread Density / Scale -->
+                        <div class="space-y-3">
+                            <div class="flex justify-between text-xs text-clay-800">
+                                <span class="uppercase tracking-widest font-mono text-clay-700">3. Thread Count (Density)</span>
+                                <span class="font-semibold" x-text="density"></span>
+                            </div>
+                            <input type="range" min="4" max="16" step="1" x-model="density" class="w-full h-1 bg-clay-200 rounded-lg appearance-none cursor-pointer accent-clay-700">
+                        </div>
+
+                        <!-- Weave Details & Specs -->
+                        <div class="bg-clay-100/50 p-4 rounded-xl space-y-2 text-xs border border-clay-100">
+                            <div class="flex justify-between"><span class="text-clay-700">Calculated Pattern Repeat:</span> <span class="font-mono font-medium">64px x 64px</span></div>
+                            <div class="flex justify-between"><span class="text-clay-700">Simulated Loom Width:</span> <span class="font-mono font-medium">150cm / 59in</span></div>
+                            <div class="flex justify-between"><span class="text-clay-700">Ideal for:</span> <span class="font-serif italic text-clay-900 font-semibold">Tweed Jackets, Wool Blankets</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Live Render Vector Output Canvas (Right) -->
+                    <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                        <!-- Canvas Container -->
+                        <div class="relative w-full aspect-square md:aspect-video lg:aspect-auto lg:h-[420px] rounded-2xl overflow-hidden border border-clay-200 bg-clay-50 flex items-center justify-center transition-all duration-300">
+                            <!-- Raw Texture Background simulation -->
+                            <div class="absolute inset-0 linen-overlay opacity-30"></div>
+
+                            <!-- Live Dynamic Pattern Render using SVGs & Tailwind Bindings -->
+                            <div class="w-full h-full" :class="zoom ? 'scale-150' : 'scale-100'" style="transition: transform 0.5s ease;">
+                                <!-- Live Weave SVG -->
+                                <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <!-- Dynamic Patterns -->
+                                        <!-- Herringbone Pattern definition -->
+                                        <pattern id="herringbonePattern" :width="density * 4" :height="density * 4" patternUnits="userSpaceOnUse">
+                                            <rect :width="density * 4" :height="density * 4" :fill="warpColor"/>
+                                            <g stroke-linecap="square">
+                                                <path :d="`M0,${density*2} L${density*2},0 L${density*4},${density*2}`" :stroke="weftColor" :stroke-width="density/2" fill="none"/>
+                                                <path :d="`M0,${density*4} L${density*2},${density*2} L${density*4},${density*4}`" :stroke="weftColor" :stroke-width="density/2" fill="none"/>
+                                                <path :d="`M0,0 L${density*2},${density*2} L${density*4},0`" :stroke="weftColor" :stroke-width="density/2" fill="none"/>
+                                            </g>
+                                        </pattern>
+
+                                        <!-- Houndstooth Pattern definition -->
+                                        <pattern id="houndstoothPattern" :width="density * 4" :height="density * 4" patternUnits="userSpaceOnUse">
+                                            <rect :width="density * 4" :height="density * 4" :fill="warpColor"/>
+                                            <!-- Draw complex block shapes representing traditional houndstooth weave -->
+                                            <path :d="`M0,0 L${density*2},0 L${density*2},${density*2} L0,${density*2} Z`" :fill="weftColor"/>
+                                            <path :d="`M${density*2},${density*2} L${density*4},${density*2} L${density*4},${density*4} L${density*2},${density*4} Z`" :fill="weftColor"/>
+                                            <path :d="`M0,${density*2} L${density*2},0 L${density*4},${density*2} L${density*2},${density*4} Z`" :fill="weftColor" opacity="0.5"/>
+                                        </pattern>
+
+                                        <!-- Basket Weave Pattern definition -->
+                                        <pattern id="basketweavePattern" :width="density * 4" :height="density * 4" patternUnits="userSpaceOnUse">
+                                            <rect :width="density * 4" :height="density * 4" :fill="warpColor"/>
+                                            <rect :width="density * 2 - 1" :height="density * 2 - 1" :fill="weftColor" x="1" y="1"/>
+                                            <rect :width="density * 2 - 1" :height="density * 2 - 1" :fill="weftColor" :x="density * 2 + 1" :y="density * 2 + 1"/>
+                                        </pattern>
+                                    </defs>
+
+                                    <!-- Render Fill Area -->
+                                    <rect width="100%" height="100%" 
+                                        :fill="selectedPattern === 'herringbone' ? 'url(#herringbonePattern)' : 
+                                               selectedPattern === 'houndstooth' ? 'url(#houndstoothPattern)' : 
+                                               'url(#basketweavePattern)'" />
+                                </svg>
+                            </div>
+
+                            <!-- Floating Label Info -->
+                            <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-clay-200 text-xs text-clay-900 font-mono shadow-sm flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full" :style="{ backgroundColor: weftColor }"></span>
+                                <span>Render Scale: <span x-text="density * 25"></span> DPI</span>
+                            </div>
+                        </div>
+
+                        <!-- Canvas Bottom Controls/Download Actions -->
+                        <div class="flex justify-between items-center bg-clay-50 p-3 rounded-xl border border-clay-100">
+                            <span class="text-xs text-clay-700">Vector rendering updated instantly</span>
+                            <div class="flex space-x-2">
+                                <button @click="alert('Weave Blueprint exported as high-res SVG')" class="bg-white hover:bg-clay-100 border border-clay-200 text-clay-900 text-xs px-3.5 py-1.5 rounded-lg transition-colors font-medium flex items-center space-x-1.5">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                    <span>Download SVG</span>
+                                </button>
+                                <button @click="alert('Weaving Blueprint requested successfully')" class="bg-clay-800 hover:bg-clay-900 text-white text-xs px-3.5 py-1.5 rounded-lg transition-all font-medium">
+                                    Order Swatch
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Weave Archives / Filterable Grid -->
+        <section id="archives" class="space-y-10 scroll-mt-24" x-data="{ currentFilter: 'all' }">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-clay-200 pb-8">
+                <div class="space-y-2">
+                    <span class="text-xs font-mono text-clay-700 uppercase tracking-widest block">Collection Book</span>
+                    <h2 class="font-serif text-4xl text-clay-900 font-semibold">The Weave Archives</h2>
+                    <p class="text-clay-800 font-light max-w-xl">Curated modern patterns featuring artisan details, heritage fibers, and organic structural logic.</p>
+                </div>
+                <!-- Filter buttons -->
+                <div class="flex flex-wrap gap-2 text-xs">
+                    <button @click="currentFilter = 'all'" :class="currentFilter === 'all' ? 'bg-clay-800 text-white' : 'bg-white hover:bg-clay-50 text-clay-800 border-clay-200'" class="px-4 py-2 border rounded-full transition-all duration-300 font-medium">
+                        All Weaves
+                    </button>
+                    <button @click="currentFilter = 'indigo'" :class="currentFilter === 'indigo' ? 'bg-clay-800 text-white' : 'bg-white hover:bg-clay-50 text-clay-800 border-clay-200'" class="px-4 py-2 border rounded-full transition-all duration-300 font-medium">
+                        Indigo Vat
+                    </button>
+                    <button @click="currentFilter = 'heritage'" :class="currentFilter === 'heritage' ? 'bg-clay-800 text-white' : 'bg-white hover:bg-clay-50 text-clay-800 border-clay-200'" class="px-4 py-2 border rounded-full transition-all duration-300 font-medium">
+                        Heritage Wool
+                    </button>
+                    <button @click="currentFilter = 'linens'" :class="currentFilter === 'linens' ? 'bg-clay-800 text-white' : 'bg-white hover:bg-clay-50 text-clay-800 border-clay-200'" class="px-4 py-2 border rounded-full transition-all duration-300 font-medium">
+                        Eco Linens
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pattern Grid Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1: Shibori Wave -->
+                <div x-show="currentFilter === 'all' || currentFilter === 'indigo'" class="bg-white rounded-2xl border border-clay-200 overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group flex flex-col justify-between">
+                    <div>
+                        <!-- Vector Textile Illustration -->
+                        <div class="h-64 bg-indigo-900 relative overflow-hidden flex items-center justify-center">
+                            <!-- Custom SVG for dynamic geometric pattern -->
+                            <svg class="absolute inset-0 w-full h-full opacity-60 text-white" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                                <pattern id="shiboriGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <circle cx="10" cy="10" r="8" stroke-width="1"/>
+                                    <circle cx="10" cy="10" r="4" stroke-width="0.5"/>
+                                    <line x1="0" y1="10" x2="20" y2="10" stroke-width="0.5" stroke-dasharray="1 1"/>
+                                    <line x1="10" y1="0" x2="10" y2="20" stroke-width="0.5" stroke-dasharray="1 1"/>
+                                </pattern>
+                                <rect width="100%" height="100%" fill="url(#shiboriGrid)"/>
+                            </svg>
+                            <div class="absolute bottom-4 left-4 bg-white/90 px-3 py-1 text-[10px] font-mono rounded tracking-widest text-indigo-900 uppercase">
+                                Ikat Resist Dye
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <h3 class="font-serif text-2xl font-bold text-clay-900">Modern Shibori Wave #4</h3>
+                            <p class="text-sm text-clay-800 leading-relaxed font-light">
+                                Hand-bound Japanese resist-dye geometry adapted for vector-driven jacquard loom systems. Deep natural indigo hues.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-clay-100 flex justify-between items-center text-xs">
+                        <span class="font-mono text-clay-700">100% Organic Silk</span>
+                        <a href="#loom" class="text-clay-800 hover:text-clay-900 font-semibold flex items-center space-x-1 group">
+                            <span>Open in Loom</span>
+                            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 2: Highlands Tartan -->
+                <div x-show="currentFilter === 'all' || currentFilter === 'heritage'" class="bg-white rounded-2xl border border-clay-200 overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group flex flex-col justify-between">
+                    <div>
+                        <!-- Vector Textile Illustration -->
+                        <div class="h-64 bg-clay-800 relative overflow-hidden flex items-center justify-center">
+                            <!-- Custom SVG for dynamic geometric pattern -->
+                            <svg class="absolute inset-0 w-full h-full opacity-50 text-ochre-500" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                                <pattern id="tartanGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                    <rect width="40" height="40" fill="#6E432F"/>
+                                    <!-- Thick diagonal stripes -->
+                                    <path d="M 0,0 L 40,40 M -10,30 L 10,50 M 30,-10 L 50,10" stroke-width="8"/>
+                                    <!-- Fine golden accent grids -->
+                                    <path d="M 0,40 L 40,0 M -10,10 L 10,-10 M 30,50 L 50,30" stroke="#FAF0D9" stroke-width="2"/>
+                                    <line x1="20" y1="0" x2="20" y2="40" stroke="#FAF0D9" stroke-width="1"/>
+                                    <line x1="0" y1="20" x2="40" y2="20" stroke="#FAF0D9" stroke-width="1"/>
+                                </pattern>
+                                <rect width="100%" height="100%" fill="url(#tartanGrid)"/>
+                            </svg>
+                            <div class="absolute bottom-4 left-4 bg-white/90 px-3 py-1 text-[10px] font-mono rounded tracking-widest text-clay-800 uppercase">
+                                Wool Tweed
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <h3 class="font-serif text-2xl font-bold text-clay-900">Highlands Broken Twill</h3>
+                            <p class="text-sm text-clay-800 leading-relaxed font-light">
+                                Heavy-gauge organic wool structure utilizing warm soil tones, deadstock yarns, and structural durability.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-clay-100 flex justify-between items-center text-xs">
+                        <span class="font-mono text-clay-700">Virgin Merino Wool</span>
+                        <a href="#loom" class="text-clay-800 hover:text-clay-900 font-semibold flex items-center space-x-1 group">
+                            <span>Open in Loom</span>
+                            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 3: Terracotta Linen -->
+                <div x-show="currentFilter === 'all' || currentFilter === 'linens'" class="bg-white rounded-2xl border border-clay-200 overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group flex flex-col justify-between">
+                    <div>
+                        <!-- Vector Textile Illustration -->
+                        <div class="h-64 bg-[#E29C74] relative overflow-hidden flex items-center justify-center">
+                            <!-- Custom SVG for dynamic geometric pattern -->
+                            <svg class="absolute inset-0 w-full h-full opacity-30 text-[#4D2C1D]" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                                <pattern id="linenWeave" width="10" height="10" patternUnits="userSpaceOnUse">
+                                    <line x1="0" y1="5" x2="10" y2="5" stroke-width="1.5"/>
+                                    <line x1="5" y1="0" x2="5" y2="10" stroke-width="1.5"/>
+                                </pattern>
+                                <rect width="100%" height="100%" fill="url(#linenWeave)"/>
+                            </svg>
+                            <div class="absolute bottom-4 left-4 bg-white/90 px-3 py-1 text-[10px] font-mono rounded tracking-widest text-clay-900 uppercase">
+                                Slub Linen
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <h3 class="font-serif text-2xl font-bold text-clay-900">Eucalyptus Terracotta Slub</h3>
+                            <p class="text-sm text-clay-800 leading-relaxed font-light">
+                                Highly tactile plain-weave linen with variable thread thickness, resulting in soft organic surface variations.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 border-t border-clay-100 flex justify-between items-center text-xs">
+                        <span class="font-mono text-clay-700">100% Raw Flax</span>
+                        <a href="#loom" class="text-clay-800 hover:text-clay-900 font-semibold flex items-center space-x-1 group">
+                            <span>Open in Loom</span>
+                            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Artisan Atelier (Visual Storytelling emphasizing "Human-crafted, not AI") -->
+        <section id="atelier" class="bg-clay-100 rounded-3xl p-8 lg:p-16 border border-clay-200 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <!-- Left Side: Dynamic Vector Handcraft Loom Graphic -->
+            <div class="lg:col-span-6 relative flex items-center justify-center p-4">
+                <!-- Circular Thread Geometry Mandala -->
+                <svg class="w-full max-w-md h-auto text-clay-700 animate-spin" style="animation-duration: 60s;" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="95" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 4"/>
+                    <circle cx="100" cy="100" r="75" stroke="currentColor" stroke-width="1"/>
+                    <circle cx="100" cy="100" r="50" stroke="currentColor" stroke-width="0.5" stroke-dasharray="1 10"/>
+                    <!-- Handcrafted style overlapping vector orbits -->
+                    <path d="M100 5 C50 50 50 150 100 195" stroke="currentColor" stroke-width="0.75"/>
+                    <path d="M100 5 C150 50 150 150 100 195" stroke="currentColor" stroke-width="0.75"/>
+                    <path d="M5 100 C50 50 150 50 195 100" stroke="currentColor" stroke-width="0.75"/>
+                    <path d="M5 100 C50 150 150 150 195 100" stroke="currentColor" stroke-width="0.75"/>
+                    <!-- Radiating loom pins -->
+                    <g stroke="currentColor" stroke-width="1.5">
+                        <line x1="100" y1="5" x2="100" y2="10"/>
+                        <line x1="100" y1="190" x2="100" y2="195"/>
+                        <line x1="5" y1="100" x2="10" y2="100"/>
+                        <line x1="190" y1="100" x2="195" y2="100"/>
+                    </g>
+                </svg>
+                <!-- Central Focus Statement -->
+                <div class="absolute bg-white/95 border border-clay-200 shadow-xl py-4 px-6 rounded-2xl text-center max-w-[240px]">
+                    <p class="font-serif italic text-clay-900 text-lg">"The Loom is our original code processor."</p>
+                    <span class="text-[9px] uppercase tracking-widest text-clay-700 font-mono block mt-2">— 18th Century Weaver Guild</span>
+                </div>
+            </div>
+
+            <!-- Right Side: Philosophy Content -->
+            <div class="lg:col-span-6 space-y-6">
+                <span class="text-xs uppercase tracking-widest font-mono text-clay-700 block">Philosophy & Lineage</span>
+                <h2 class="font-serif text-4xl lg:text-5xl text-clay-900 font-semibold leading-tight">Human Hands Meet Mathematical Precision</h2>
+                <p class="text-clay-800 leading-relaxed font-light">
+                    Every weave in our system begins as an actual physical sample in our studio, sourced from natural fibers like flax, mulberry silk, and hand-spun merino. We analyze the weave patterns under magnifying counters to trace exact coordinate pathways.
+                </p>
+                <p class="text-clay-800 leading-relaxed font-light">
+                    We then translate those real physical physics into raw SVG coordinates. When you use SŪTRA, you are interacting with structural vector physics that trace directly back to physical weft density and real tension curves.
+                </p>
+
+                <!-- Handcrafted Signatures or Technical details -->
+                <div class="flex items-center space-x-6 pt-4">
+                    <div class="flex -space-x-3">
+                        <span class="w-10 h-10 rounded-full bg-clay-700 border-2 border-white flex items-center justify-center text-white text-xs font-serif italic">S</span>
+                        <span class="w-10 h-10 rounded-full bg-sage-500 border-2 border-white flex items-center justify-center text-white text-xs font-serif italic">M</span>
+                        <span class="w-10 h-10 rounded-full bg-indigo-900 border-2 border-white flex items-center justify-center text-white text-xs font-serif italic">K</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-clay-900">Master weavers supervising code builds</p>
+                        <p class="text-xs text-clay-700">Bengaluru & Milan Design Studios</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Dynamic Tactile Moodboard -->
+        <section id="moodboard" class="space-y-8 scroll-mt-24" x-data="{ 
+            selectedVibe: 'autumnal',
+            palette: ['#8C5E45', '#E6D5C3', '#D4AF37', '#4D2C1D']
+        }">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <span class="text-xs font-mono text-clay-700 uppercase tracking-widest block">Inspiration Engine</span>
+                <h2 class="font-serif text-4xl text-clay-900 font-semibold">The Designer’s Moodboard</h2>
+                <p class="text-sm text-clay-800 font-light">Assemble tactile components, hues, and vector weights to formulate creative direction guidelines.</p>
+            </div>
+
+            <!-- Moodboard Selection Tabs -->
+            <div class="flex justify-center space-x-2 border-b border-clay-200 pb-4 max-w-md mx-auto text-xs">
+                <button @click="selectedVibe = 'autumnal'; palette = ['#8C5E45', '#E6D5C3', '#D4AF37', '#4D2C1D']" 
+                    :class="selectedVibe === 'autumnal' ? 'border-clay-700 text-clay-900 font-semibold' : 'border-transparent text-clay-700'" class="border-b-2 px-4 py-2 transition-all">
+                    Soil & Grain
+                </button>
+                <button @click="selectedVibe = 'coastal'; palette = ['#1B2430', '#8FA89B', '#E8EFE9', '#546A76']" 
+                    :class="selectedVibe === 'coastal' ? 'border-clay-700 text-clay-900 font-semibold' : 'border-transparent text-clay-700'" class="border-b-2 px-4 py-2 transition-all">
+                    Indigo Shores
+                </button>
+                <button @click="selectedVibe = 'botanical'; palette = ['#3D5446', '#8FA89B', '#FAF6F0', '#B07D62']" 
+                    :class="selectedVibe === 'botanical' ? 'border-clay-700 text-clay-900 font-semibold' : 'border-transparent text-clay-700'" class="border-b-2 px-4 py-2 transition-all">
+                    Dry Sage & Eucalyptus
+                </button>
+            </div>
+
+            <!-- Moodboard Collage Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-[600px] md:h-[450px]">
+                <!-- Panel 1: Fabric Swatch Texture (Large Left) -->
+                <div class="md:col-span-5 rounded-2xl border border-clay-200 overflow-hidden relative group flex items-end p-6">
+                    <!-- Background Dynamic Color -->
+                    <div class="absolute inset-0 transition-colors duration-700" :style="{ backgroundColor: palette[0] }"></div>
+                    <!-- Vector Grid overlaying swatch -->
+                    <svg class="absolute inset-0 w-full h-full text-white/20" viewBox="0 0 100 100">
+                        <pattern id="moodGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+                            <line x1="0" y1="0" x2="10" y2="10" stroke="currentColor" stroke-width="0.5"/>
+                        </pattern>
+                        <rect width="100%" height="100%" fill="url(#moodGrid)"/>
+                    </svg>
+                    <!-- Floating Card inside Swatch -->
+                    <div class="relative bg-white/95 backdrop-blur-md p-4 rounded-xl border border-clay-100 w-full shadow-lg">
+                        <span class="text-[10px] font-mono text-clay-700 block uppercase">Dominant Yarn Vibe</span>
+                        <h4 class="font-serif text-xl font-bold text-clay-900 mt-1">SŪTRA Corduroy Twist</h4>
+                        <div class="flex justify-between items-center text-xs text-clay-800 mt-2">
+                            <span>Warp Density: 75%</span>
+                            <span class="font-mono text-[10px]" x-text="palette[0]"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 2: Color Palette Swatches (Center Grid) -->
+                <div class="md:col-span-3 grid grid-rows-4 gap-4 h-full">
+                    <template x-for="(color, index) in palette" :key="index">
+                        <div class="rounded-xl border border-clay-200 flex items-center justify-between px-4 py-2 bg-white shadow-sm transition-transform duration-300 hover:scale-[1.02]">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 rounded-full border border-clay-100 shadow-inner" :style="{ backgroundColor: color }"></span>
+                                <span class="font-mono text-xs uppercase text-clay-900" x-text="color"></span>
+                            </div>
+                            <span class="text-[9px] uppercase tracking-widest font-mono text-clay-700" x-text="`Dye ID #${100 + index*37}`"></span>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Panel 3: Technical Blueprint details (Right) -->
+                <div class="md:col-span-4 rounded-2xl border border-clay-200 bg-white p-6 flex flex-col justify-between shadow-md relative overflow-hidden">
+                    <!-- Subtle Background Pattern -->
+                    <svg class="absolute top-0 right-0 w-32 h-32 text-clay-100 opacity-80" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+                    </svg>
+                    <div class="space-y-4 relative">
+                        <span class="text-[10px] font-mono text-clay-700 uppercase tracking-widest block">Structural Blueprint</span>
+                        <h3 class="font-serif text-2xl text-clay-900 font-semibold">Tension Blueprint #19</h3>
+                        <p class="text-xs text-clay-800 font-light leading-relaxed">
+                            Simulated weave density based on vertical threads stretched tight at 12N tension on traditional wood frames. Includes weft variation vectors.
+                        </p>
+                    </div>
+
+                    <div class="space-y-2 border-t border-clay-100 pt-4 text-xs">
+                        <div class="flex justify-between">
+                            <span class="text-clay-700">Warp Tension Spec:</span>
+                            <span class="font-mono font-semibold">12N (Standard Linen)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-clay-700">Dye Resistance factor:</span>
+                            <span class="font-mono font-semibold">89% Waterproof</span>
+                        </div>
+                        <button class="w-full mt-2 bg-clay-50 hover:bg-clay-100 border border-clay-200 text-clay-900 py-2 rounded-lg text-xs font-medium transition-colors">
+                            Copy Technical Palette CSS
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="border-t border-clay-200 bg-clay-50/50 py-12 px-6 lg:px-12 mt-20 text-xs">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            <!-- Brand Section -->
+            <div class="md:col-span-4 space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div class="font-serif text-2xl font-bold tracking-wider text-clay-900">SŪTRA</div>
+                </div>
+                <p class="text-clay-800 max-w-sm font-light leading-relaxed">
+                    SŪTRA is a vector-based digital playground built to preserve and simulate the tactile crafts of raw yarn weaving, organic dyes, and mathematical symmetry. Designed with respect for heritage looms.
+                </p>
+            </div>
+
+            <!-- Link Columns -->
+            <div class="md:col-span-2 space-y-3">
+                <p class="font-mono font-bold uppercase tracking-widest text-clay-700 text-[10px]">The Studio</p>
+                <ul class="space-y-2 text-clay-800 font-light">
+                    <li><a href="#" class="hover:text-clay-900 transition-colors">Design Philosophy</a></li>
+                    <li><a href="#" class="hover:text-clay-900 transition-colors">Weaver Guilds</a></li>
+                    <li><a href="#" class="hover:text-clay-900 transition-colors">Yarn Supply Chain</a></li>
+                    <li><a href="#" class="hover:text-clay-900 transition-colors">Atelier Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="md:col-span-2 space-y-3">
+                <p class="font-mono font-bold uppercase tracking-widest text-clay-700 text-[10px]">The Loom Tech</p>
+                <ul class="space-y-2 text-clay-800 font-light">
+                    <li><a href="#" class="hover:text-clay-900 transition-colors">Interactive Loom API</a></li>
+                    <li><a href="#" class="hover:text-clay-900 transition-colors">Exporting Vectors</a></li>
+                    <li><a href="#" class="hover:text-clay-900 transition-colors">Dyeing Mathematics</a></li>
+                    <li><a href="#" class="hover:text-clay-900 transition-colors">High-res SVG Guide</a></li>
+                </ul>
+            </div>
+
+            <!-- Technical details / Anti-AI statement -->
+            <div class="md:col-span-4 space-y-4">
+                <p class="font-mono font-bold uppercase tracking-widest text-clay-700 text-[10px]">Human Craft Promise</p>
+                <div class="border border-clay-200 p-4 rounded-xl space-y-2 bg-white/80">
+                    <p class="font-light text-clay-800 leading-normal">
+                        Every formula, vector coordinate, and textile colorway on this page is meticulously authored by hand, mimicking real physical light, physics, and weft properties.
+                    </p>
+                    <span class="inline-block bg-sage-100 text-sage-800 text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full">
+                        100% Code Crafted
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto border-t border-clay-200 mt-12 pt-6 flex flex-col md:flex-row justify-between text-clay-700">
+            <p>&copy; 2024 SŪTRA Labs. Built for sustainable textile designs.</p>
+            <div class="flex space-x-4 mt-4 md:mt-0">
+                <a href="#" class="hover:text-clay-900 transition-colors">Terms of Weave</a>
+                <a href="#" class="hover:text-clay-900 transition-colors">Atelier Access</a>
+                <a href="#" class="hover:text-clay-900 transition-colors">Vector Standards</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
