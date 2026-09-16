@@ -4,7 +4,7 @@ A digital textile design playground featuring interactive vector weaving, custom
 
 ## Preview
 
-![SŪTRA Design](./screenshot.png)
+![SŪTRA Design](./Sutra Designs/Screenshot 2026-09-16 104557.png)
 
 ## Features
 
